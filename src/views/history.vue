@@ -2,14 +2,8 @@
     <div id="app">
         <b-container>
             <div class="header">
-                 <div class="header-icon" id="header-icon">
-                    <img src="../assets/images/menu.png" alt="menu">
-                </div>
                 <div class="header-text">
                     <p>Food Items</p>
-                </div>
-                <div class="header-search-icon">
-                    <img src="../assets/images/magnifying-glass.png" alt="search">
                 </div>
             </div>
         </b-container>
@@ -25,36 +19,32 @@
         <b-container>
             <div class="content">
                 <b-row>
-                    <b-col cols=3>history</b-col>
+                    <b-col>
+                        <div class="card-1"></div>
+                    </b-col>
+                    <b-col>
+                        <div class="card-2"></div>
+                    </b-col>
+                    <b-col>
+                        <div class="card-3"></div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col>
+                        <div class="graph"></div>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col>
+                        <div class="box"></div>
+                    </b-col>
                 </b-row>
             </div>
         </b-container>
-        <b-container>
-            <div class="cart">
-                <div class="cart-text">
-                    <p>Cart <span class="badge badge-pill badge-info">0</span></p>
-                </div>
-            </div>
-
-            <div class="cart-content">
-               <div class="cart-content-icon">
-                   <img src="../assets/images/food-and-restaurant.png" alt="">
-                   <div class="cart-content-text">
-                       <p>You cart is empty</p>
-                   </div>
-                   <div class="cart-content-text-sub">
-                       <p>Please add some item from the menu</p>
-                   </div>
-               </div>
-            </div>
-        </b-container>
-        <Home/>
     </div>
 </template>
 
 <script>
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 export default {
     name: "history",
@@ -76,7 +66,7 @@ body {
 
 .header {
     position: fixed;
-    width: 1003px;
+    width: 1352px;
     height: 100px;
     left: 0px;
     top: 0px;
@@ -95,7 +85,7 @@ body {
 }
 
 .header-text {
-    margin: 2.5em 0em 0em 28em;
+    margin: 2.5em 0em 0em 39em;
 }
 
 .header-text p {
@@ -135,11 +125,79 @@ li {
 
 .content {
     position: absolute;
-    width: 893px;
-    height: 800px;
+    width: 1251px;
+    height: 1000px;
     left: 109px;
     top: 100px;
-    background: rgba(190, 195, 202, 0.3);
+    background-color: #E5E5E5;
+}
+
+.card-1 {
+    position: absolute;
+    width: 300px;
+    height: 165px;
+    left: 85px;
+    top: 45px;
+
+    background: linear-gradient(278.29deg, #FBB2B4 30.05%, rgba(255, 143, 178, 0) 133.19%);
+    filter: drop-shadow(10px 15px 10px rgba(255, 143, 178, 0.25));
+    border-radius: 10px;
+}
+
+.card-2 {
+    position: absolute;
+    width: 300px;
+    height: 165px;
+    left: 60px;
+    top: 45px;
+
+    background: linear-gradient(278.29deg, #29DFFF 30.05%, rgba(41, 223, 255, 0) 133.19%);
+    filter: drop-shadow(10px 15px 10px rgba(41, 223, 255, 0.25));
+    border-radius: 10px;
+}
+
+.card-3 {
+    position: absolute;
+    width: 300px;
+    height: 165px;
+    left: 38px;
+    top: 45px;
+
+    background: linear-gradient(278.29deg, #AB84C8 30.05%, rgba(241, 201, 236, 0) 133.19%);
+    filter: drop-shadow(10px 15px 10px rgba(241, 201, 236, 0.25));
+    border-radius: 10px;
+}
+
+.graph {
+    position: absolute;
+    width: 1106px;
+    height: 250px;
+    left: 85px;
+    top: 257px;
+
+    background: #FFFFFF;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.box {
+    position: absolute;
+    width: 1103px;
+    height: 209px;
+    left: 86px;
+    top: 560px;
+
+    background: #FFFFFF;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.form {
+    width: 853px;
+    height: auto;
+    background-color:#ffffff;
+    margin: 20px 185px;
+    padding: 30px 80px;
 }
 
 .cart {

@@ -9,7 +9,10 @@
                     <p>Food Items</p>
                 </div>
                 <div class="header-search-icon">
-                    <img src="../assets/images/magnifying-glass.png" alt="search">
+                    <img src="../assets/images/magnifying-glass.png" alt="search" @click="search(cari)">
+                </div>
+                <div class="head-search">
+                    <input type="text" placeholder="cariii" v-model="cari">
                 </div>
             </div>
         </b-container>
@@ -30,7 +33,7 @@
                     <p>{{max}}</p>
                 </div>
                 <b-row>
-                    <div class="" v-for="datas in items" :key="datas.id">
+                    <div class="" v-for="datas in filter" :key="datas.id">
                         <div class="sort" v-if="max >= Number(datas.price) ">
                         <b-col cols="12" class="mt-5" style="padding-left: 3rem; padding-right: 0;">
                             <b-card :img-src="datas.image" :alt="datas.name" style = "max-width: 15rem;" class = "mb-2" >
@@ -74,27 +77,18 @@
                     <b-row>
                         <b-col cols="12">
                             <div class="add-to-cart" v-for="datas in cart" :key="datas.id">
-                            <div class="cart-txt">{{datas.name}}</div>
-                            <div class="cart-price">{{datas.price}}</div>
-                            <div class="btn-group">
-                                <div class="quantity">
-                                    <button class="btn-cart" type="button" name="button">
-                                        +
-                                    </button>
-                                    <input type="text" name="name" value="0">
-                                    <button class="btn-cart" type="button" name="button">
-                                        -
-                                    </button>
-                                </div>
-                            </div>
-                            <div><img class="cart-img" :src="datas.image" alt="" srcset=""></div>
+                                <cart
+                                    :name = datas.name
+                                    :price = datas.price
+                                    :image = datas.image
+                                 />
                             </div>
                         </b-col>
                     </b-row>
                     <div class="cart-bottom">
                         <strong><p class="txt-1">Total : Rp . {{calculate}}</p></strong>
-                        <b-button>Checkout</b-button>
-                        <b-button>Cancel</b-button>
+                        <b-button block>Checkout</b-button>
+                        <b-button block>Cancel</b-button>
                     </div>
                 </div>
             </div>
@@ -104,15 +98,20 @@
 
 <script>
 import axios from "axios"
+import cart from "@/components/Cart.vue"
 
 
 export default {
     name: "home",
+    components : {
+        cart
+    },
     data() {
         return {
             items: [],
             cart: [],
-            max: 100000
+            max: 100000,
+            cari: ''
         }
     },
     methods: {
@@ -122,7 +121,13 @@ export default {
         },
         addChart(data){
             this.cart.push(data)
+        },
+        search(cari){
+            return this.items.filter((values) => {
+                return values.name.includes(cari)
+            })
         }
+
     },
     computed: {
         calculate(){
@@ -131,11 +136,16 @@ export default {
                 harga = Number(datas.price) + harga
             }
             return harga
+        },
+        filter(){
+            return this.items.filter((values) => {
+                return values.name.toLowerCase().includes(this.cari)
+            })
         }
     },
     mounted() {
         axios
-            .get('http://localhost:8081/product')
+            .get(process.env.VUE_APP_URL + "product")
             .then(response => 
                 {
                    this.items = response.data.result
@@ -192,8 +202,12 @@ body {
     position: absolute;
     width: 35.35px;
     height: 35px;
-    left: 916.14px;
-    top: 34px;
+    left: 934.14px;
+    top: 35px;
+}
+
+.head-search {
+    margin: -3rem 38rem;
 }
 
 .left-bar {
@@ -347,13 +361,13 @@ li {
 }
 
 .cart-bottom {
-    position: fixed;
+    position: absolute;
+    width: 20rem;
+    margin: 17rem 1rem;
 }
 
 .txt-1 {
-    position: fixed;
     font-size: auto;
     font-weight: bold;
-    margin: 18rem 1rem;
 }
 </style>

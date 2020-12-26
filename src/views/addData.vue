@@ -2,14 +2,8 @@
     <div id="app">
         <b-container>
             <div class="header">
-                 <div class="header-icon" id="header-icon">
-                    <img src="../assets/images/menu.png" alt="menu">
-                </div>
                 <div class="header-text">
-                    <p>Food Items</p>
-                </div>
-                <div class="header-search-icon">
-                    <img src="../assets/images/magnifying-glass.png" alt="search">
+                    <p>Add Items</p>
                 </div>
             </div>
         </b-container>
@@ -24,8 +18,8 @@
         </b-container>
         <b-container>
             <div class="content">
-                <b-button style="float: right;"><router-link to="/form">Add</router-link></b-button>
                 <table class="table">
+                <b-button variant="success"><router-link to="/form">Add</router-link></b-button>
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
@@ -45,25 +39,6 @@
                     </tr>
                 </table>
             
-            </div>
-        </b-container>
-        <b-container>
-            <div class="cart">
-                <div class="cart-text">
-                    <p>Cart <span class="badge badge-pill badge-info">0</span></p>
-                </div>
-            </div>
-
-            <div class="cart-content">
-               <div class="cart-content-icon">
-                   <img src="../assets/images/food-and-restaurant.png" alt="">
-                   <div class="cart-content-text">
-                       <p>You cart is empty</p>
-                   </div>
-                   <div class="cart-content-text-sub">
-                       <p>Please add some item from the menu</p>
-                   </div>
-               </div>
             </div>
         </b-container>
     </div>
@@ -95,7 +70,7 @@ export default {
     },
     mounted() {
         axios
-            .get('http://localhost:8081/product')
+            .get(process.env.VUE_APP_URL + "product")
             .then(response => 
                 {
                    this.items = response.data.result
@@ -121,7 +96,7 @@ body {
 
 .header {
     position: fixed;
-    width: 1003px;
+    width: 1352px;
     height: 100px;
     left: 0px;
     top: 0px;
@@ -140,7 +115,7 @@ body {
 }
 
 .header-text {
-    margin: 2.5em 0em 0em 28em;
+    margin: 2.5em 0em 0em 39em;
 }
 
 .header-text p {
@@ -180,7 +155,7 @@ li {
 
 .content {
     position: absolute;
-    width: 893px;
+    width: 1251px;
     height: 800px;
     left: 109px;
     top: 100px;
@@ -190,8 +165,8 @@ li {
 .table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  margin: 2rem 1rem;
-  width: 100%;
+  margin: 3rem 4rem;
+  width: 90%;
   font-size: 0px;
   font-size: 15px;
 }
