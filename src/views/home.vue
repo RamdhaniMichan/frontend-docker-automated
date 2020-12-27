@@ -250,7 +250,7 @@ li {
 
 .cart {
     position: fixed;
-    width: 491px;
+    width: 536px;
     height: 96px;
     left: 999px;
     top: 0px;
@@ -260,7 +260,7 @@ li {
 }
 
 .cart-text {
-    margin: 2em 0em 0em 7.5em;
+    margin: 2em 0em 0em 12.5em;
     font-size: larger;
     font-weight: bold;
 
@@ -268,7 +268,7 @@ li {
 
 .cart-content {
     position: fixed;
-    width: 490px;
+    width: 536px;
     height: 800px;
     left: 1002px;
     top: 100px;
@@ -281,7 +281,7 @@ li {
     position: absolute;
     width: 200px;
     height: 200px;
-    left: 75px;
+    left: 170px;
     top: 100px;
 }
 

@@ -66,7 +66,7 @@ body {
 
 .header {
     position: fixed;
-    width: 1352px;
+    width: 100%;
     height: 100px;
     left: 0px;
     top: 0px;
@@ -125,7 +125,7 @@ li {
 
 .content {
     position: absolute;
-    width: 1251px;
+    width: 100%;
     height: 1000px;
     left: 109px;
     top: 100px;

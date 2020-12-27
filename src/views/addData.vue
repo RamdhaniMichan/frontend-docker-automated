@@ -96,7 +96,7 @@ body {
 
 .header {
     position: fixed;
-    width: 1352px;
+    width: 100%;
     height: 100px;
     left: 0px;
     top: 0px;
@@ -155,7 +155,7 @@ li {
 
 .content {
     position: absolute;
-    width: 1251px;
+    width: 100%;
     height: 800px;
     left: 109px;
     top: 100px;
@@ -165,7 +165,7 @@ li {
 .table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  margin: 3rem 4rem;
+  margin: 3rem 1.5rem;
   width: 90%;
   font-size: 0px;
   font-size: 15px;
