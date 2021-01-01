@@ -4,6 +4,7 @@ import Home from "./views/home.vue"
 import History from "./views/history.vue"
 import AddData from "./views/addData.vue"
 import Form from "./views/form.vue"
+import Login from "./components/Login.vue"
 
 Vue.use(VueRouter)
 
@@ -11,7 +12,7 @@ Vue.use(VueRouter)
 const Router = new VueRouter ({
     routes : [
         {
-            path : "/",
+            path : "/home",
             name : "home",
             component : Home
         },
@@ -34,6 +35,11 @@ const Router = new VueRouter ({
             path : "/edit/:id",
             name : "edit",
             component : Form
+        },
+        {
+            path : "/",
+            name : "login",
+            component : Login
         },
     ]
 })

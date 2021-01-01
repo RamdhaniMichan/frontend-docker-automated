@@ -35,7 +35,7 @@
                 <b-row>
                     <div class="" v-for="datas in filter" :key="datas.id">
                         <div class="sort" v-if="max >= Number(datas.price) ">
-                        <b-col cols="12" class="mt-5" style="padding-left: 3rem; padding-right: 0;">
+                        <b-col cols="12" class="mt-5" style="padding-left: 4rem; padding-right: 0;">
                             <b-card :img-src="datas.image" :alt="datas.name" style = "max-width: 15rem;" class = "mb-2" >
                                 <div class="">
                                     <b-card-text>
@@ -86,11 +86,33 @@
                         </b-col>
                     </b-row>
                     <div class="cart-bottom">
-                        <strong><p class="txt-1">Total : Rp . {{calculate}}</p></strong>
-                        <b-button block>Checkout</b-button>
-                        <b-button block>Cancel</b-button>
+                        <strong><p class="txt-1">Total : Rp . <span class="txt-2">{{calculate}}</span></p></strong>
+                        <b-button variant="primary" v-b-modal="'checkout'" block>Checkout</b-button>
+                        <b-button @click="cancel" variant="danger" block>Cancel</b-button>
                     </div>
                 </div>
+            </div>
+            <div>
+                <b-modal id="checkout" size="sm" title="Checkout">
+                    <div v-for="data of cart" :key="data.id">
+                        <b-row>
+                            <b-col>
+                                <p>{{data.name}}</p>
+                            </b-col>
+                            <b-col>
+                                <p class="modal-text2">Rp. {{data.price}}</p>
+                            </b-col>
+                        </b-row>
+                    </div>
+                
+                    <div>
+                        <p class="modal-text3">Total : {{calculate}}</p>
+                    </div>
+                    <div>
+                        <p>Cashier : {{checkout.chasier}}</p>
+                    </div>
+                    <b-button block variant="success" @click="addCheckout()">Print</b-button>
+                </b-modal>
             </div>
         </b-container>
     </div>
@@ -111,22 +133,39 @@ export default {
             items: [],
             cart: [],
             max: 100000,
-            cari: ''
+            cari: '',
+            checkout: {
+                chasier: 'michan',
+                amount: 0,
+                orders: ''
+            },
         }
     },
     methods: {
-        getImage(pic) {
-            let images = require.context('../assets/images', false, /\.png$/)
-            return images('./' + pic )
-        },
-        addChart(data){
+        addChart(data) {
             this.cart.push(data)
         },
-        search(cari){
-            return this.items.filter((values) => {
-                return values.name.includes(cari)
+        addCheckout() {
+            this.checkout.amount = this.calculate
+            let arrayValue = []
+            this.cart.forEach((value) => {
+                arrayValue.push(value.name)
+            });
+            this.checkout.orders = arrayValue.join(", ").toString("")
+            axios({
+                method: "POST",
+                url: process.env.VUE_APP_URL + "history",
+                headers: {
+                    'authtoken': localStorage.getItem('token'),
+                },
+                data: this.checkout,
             })
-        }
+            .then((res) => {console.log(res)})
+        },
+
+        cancel() {
+            this.cart = []
+        },
 
     },
     computed: {
@@ -141,17 +180,23 @@ export default {
             return this.items.filter((values) => {
                 return values.name.toLowerCase().includes(this.cari)
             })
-        }
+        },
+        
     },
-    mounted() {
-        axios
-            .get(process.env.VUE_APP_URL + "product")
+    async mounted() {
+     await axios
+            .get(process.env.VUE_APP_URL + 'product', {
+                headers: {
+                    'authtoken': localStorage.getItem('token')
+                }
+            })
             .then(response => 
                 {
                    this.items = response.data.result
                 }
             )
             .catch(err => {this.items = err})
+
     }
 }
 </script>
@@ -171,7 +216,7 @@ body {
 
 .header {
     position: fixed;
-    width: 1003px;
+    width: 1054px;
     height: 100px;
     left: 0px;
     top: 0px;
@@ -234,7 +279,7 @@ li {
 
 .content {
     position: absolute;
-    width: 893px;
+    width: 943px;
     height: auto;
     left: 109px;
     top: 100px;
@@ -260,7 +305,7 @@ li {
 }
 
 .cart-text {
-    margin: 2em 0em 0em 12.5em;
+    margin: 2em 0em 0em 13.5em;
     font-size: larger;
     font-weight: bold;
 
@@ -270,7 +315,7 @@ li {
     position: fixed;
     width: 536px;
     height: 800px;
-    left: 1002px;
+    left: 1052px;
     top: 100px;
 
     background: #FFFFFF;
@@ -281,7 +326,7 @@ li {
     position: absolute;
     width: 200px;
     height: 200px;
-    left: 170px;
+    left: 135px;
     top: 100px;
 }
 
@@ -326,19 +371,19 @@ li {
     position: absolute;
     font-size: 1rem;
     font-weight: bold;
-    margin: auto 7rem;
+    margin: auto 8rem;
 }
 
 .cart-price {
     position: absolute;
     font-size: 1rem;
     font-weight: bold;
-    margin: 4.5rem 17rem;
+    margin: 4.5rem 30rem;
 }
 
 .btn-group {
     position: absolute;
-    margin: 4rem 7rem;
+    margin: 4rem 8rem;
 }
 
 .quantity input {
@@ -362,12 +407,24 @@ li {
 
 .cart-bottom {
     position: absolute;
-    width: 20rem;
+    width: 27rem;
     margin: 17rem 1rem;
 }
 
 .txt-1 {
     font-size: auto;
     font-weight: bold;
+}
+
+.txt-2 {
+    margin: auto 24rem;
+}
+
+.modal-text2 {
+   padding-left: 2rem;
+}
+
+.modal-text3 {
+   padding-left: 10rem;
 }
 </style>

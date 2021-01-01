@@ -101,16 +101,6 @@ export default {
     },
     methods: {
       saveProd() {
-        //   let url = new URLSearchParams()
-        //   url.append('name', this.name)
-        //   url.append('description', this.description)
-        //   url.append('image', this.image)
-        //   url.append('price', this.price)
-        //   url.append('category', this.idfood)
-
-        //   axios.post('http://localhost:8081/product', url)
-        //   .then(res => console.log(res))
-        //   .catch(err => console.log(err))
         const postData = {
             name : this.name,
             description : this.description,

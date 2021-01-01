@@ -3,14 +3,14 @@
         <b-row>
             <b-col cols="12">
                     <div class="cart-txt">{{name}}</div>
-                    <div class="cart-price">{{price}}</div>
+                    <div class="cart-price">{{price * jumlah}}</div>
                     <div class="btn-group">
                         <div class="quantity">
-                            <button class="btn-cart" type="button" name="button">
+                            <button class="btn-cart" @click="plus" type="button" name="button">
                                 +
                             </button>
-                            <input type="text" name="name" value="0">
-                            <button class="btn-cart" type="button" name="button">
+                            <input type="text" name="name" :value="jumlah">
+                            <button class="btn-cart" @click="less" type="button" name="button">
                                 -
                             </button>
                         </div>
@@ -24,6 +24,11 @@
 <script>
     export default {
     name: "cart",
+    data(){
+        return {
+            jumlah : 1,
+        }
+    },
     props: {
             name: {
                 type: String,
@@ -38,6 +43,15 @@
                 required: true,
             },
         },
+        methods: {
+            plus() {
+                let x = this.jumlah++
+                x * this.price
+            },
+            less(){
+                this.jumlah--
+            }
+        }
     }
 </script>
 
@@ -65,7 +79,7 @@
     position: absolute;
     font-size: 1rem;
     font-weight: bold;
-    margin: 4.5rem 17rem;
+    margin: 4.5rem 24rem;
 }
 
 .btn-group {
