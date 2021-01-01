@@ -33,7 +33,7 @@ export default {
             });
 
             localStorage.setItem('token', response.data.result[0].token)
-            this.$router.push("/")
+            this.$router.push("/home")
             
         }
     }

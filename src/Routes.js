@@ -3,7 +3,6 @@ import VueRouter from "vue-router"
 import Home from "./views/home.vue"
 import History from "./views/history.vue"
 import AddData from "./views/addData.vue"
-import Form from "./views/form.vue"
 import Login from "./components/Login.vue"
 
 Vue.use(VueRouter)
@@ -25,16 +24,6 @@ const Router = new VueRouter ({
             path : "/add",
             name : "add",
             component : AddData
-        },
-        {
-            path : "/form",
-            name : "addData",
-            component : Form
-        },
-        {
-            path : "/edit/:id",
-            name : "edit",
-            component : Form
         },
         {
             path : "/",
