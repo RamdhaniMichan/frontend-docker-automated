@@ -2,20 +2,22 @@
     <div>
         <b-row>
             <b-col cols="12">
-                    <div class="cart-txt">{{name}}</div>
-                    <div class="cart-price">{{price * jumlah}}</div>
-                    <div class="btn-group">
-                        <div class="quantity">
-                            <button class="btn-cart" @click="plus" type="button" name="button">
-                                +
-                            </button>
-                            <input type="text" name="name" :value="jumlah">
-                            <button class="btn-cart" @click="less" type="button" name="button">
-                                -
-                            </button>
+                     <div class="add-to-cart" v-for="(item, index) in cart" :key="item.id">
+                        <div class="cart-price">{{item.product.price}}</div>
+                        <p>{{index}}</p>
+                        <div class="btn-group">
+                            <div class="quantity">
+                                <button class="btn-cart" @click="plus" type="button" name="button">
+                                    +
+                                </button>
+                                <input type="text" name="name" :value="jumlah">
+                                <button class="btn-cart" @click="less" type="button" name="button">
+                                    -
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div><img class="cart-img" :src="image" alt="" srcset=""></div>
+                     </div>
+                    <div><img class="cart-img" :img-src="item.product.image" alt="" srcset=""></div>
             </b-col>
         </b-row>
     </div>
@@ -24,34 +26,29 @@
 <script>
     export default {
     name: "cart",
+    props: ["cart"],
     data(){
         return {
             jumlah : 1,
+            // allCart: this.cart
         }
     },
-    props: {
-            name: {
-                type: String,
-                required: true,
-            },
-            price: {
-                type: String,
-                required: true,
-            },
-            image: {
-                type: String,
-                required: true,
-            },
-        },
         methods: {
+            qty(){
+                this.$emit('qty', this.jumlah)
+            },
             plus() {
                 let x = this.jumlah++
                 x * this.price
             },
             less(){
-                this.jumlah--
+                if (this.jumlah === 1){
+                    alert('tidak boleh kurang dari 1')
+                } else {
+                    this.jumlah--
+                }
             }
-        }
+        },
     }
 </script>
 

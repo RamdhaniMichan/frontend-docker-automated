@@ -9,17 +9,14 @@
                     <p>Food Items</p>
                 </div>
                 <div class="header-search-icon">
-                    <img src="../assets/images/magnifying-glass.png" alt="search" @click="search(cari)">
-                </div>
-                <div class="head-search">
-                    <input type="text" placeholder="cariii" v-model="cari">
+                    <img src="../assets/images/magnifying-glass.png" alt="search" @click="hello=!hello">
                 </div>
             </div>
         </b-container>
         <b-container>
             <div class="left-bar" id="left-bar">
                 <ul>
-                    <li><router-link to="/"><img class="icon" src="../assets/images/fork.png" alt=""></router-link></li>
+                    <li><router-link to="/home"><img class="icon" src="../assets/images/fork.png" alt=""></router-link></li>
                     <li><router-link to="/history"><img class="icon" src="../assets/images/clipboard.png" alt=""></router-link></li>
                     <li><router-link to="/add"><img class="icon" src="../assets/images/add.png" alt=""></router-link></li>
                 </ul>
@@ -28,25 +25,32 @@
         <b-container>
             <div class="content">
                 
-                <div class="b">
-                    <input type="range" min="0" max="100000" v-model="max" />
-                    <p>{{max}}</p>
+                <div class="box" v-show="hello">
+                    <b-container class="bv-example-row">
+                        <b-row>
+                            <b-col>
+                                <input type="range" min="0" max="100000" v-model="max" />
+                                <p>{{max}}</p>
+                            </b-col>
+                            <b-col><input type="text" placeholder="cariii" v-model="cari"></b-col>
+                        </b-row>
+                    </b-container>
+                    
                 </div>
                 <b-row>
                     <div class="" v-for="datas in filter" :key="datas.id">
                         <div class="sort" v-if="max >= Number(datas.price) ">
                         <b-col cols="12" class="mt-5" style="padding-left: 4rem; padding-right: 0;">
-                            <b-card :img-src="datas.image" :alt="datas.name" style = "max-width: 15rem;" class = "mb-2" >
-                                <div class="">
                                     <b-card-text>
-                                        <h4 class="name">{{ datas.name }}</h4>
-                                        <p class="detail">{{ datas.description }}</p>
-                                        <p class="price">Rp.<strong>{{ datas.price }}</strong></p>
+                                        <list
+                                           :name = "datas.name"
+                                           :description = "datas.description"
+                                           :price = "datas.price"
+                                           :image = "datas.image" 
+                                           :prod = "datas"
+                                           @addData ="addChart"
+                                        />
                                     </b-card-text>
-                                </div>
-
-                                <b-button variant="primary" @click="addChart(datas)">Add</b-button>
-                            </b-card>
                         </b-col>
                         </div>                  
                     </div>
@@ -56,7 +60,7 @@
         <b-container>
             <div class="cart">
                 <div class="cart-text">
-                    <p>Cart <span class="badge badge-pill badge-info">{{cart.length}}</span></p>
+                    <p>Cart <span class="badge badge-pill badge-info" @qty="getQty">{{cart.length}}</span></p>
                 </div>
             </div>
 
@@ -76,13 +80,7 @@
                 <div class="loop" v-else>
                     <b-row>
                         <b-col cols="12">
-                            <div class="add-to-cart" v-for="datas in cart" :key="datas.id">
-                                <cart
-                                    :name = datas.name
-                                    :price = datas.price
-                                    :image = datas.image
-                                 />
-                            </div>
+                                <cart :cart="allChart"/>
                         </b-col>
                     </b-row>
                     <div class="cart-bottom">
@@ -121,12 +119,14 @@
 <script>
 import axios from "axios"
 import cart from "@/components/Cart.vue"
+import list from "../components/List.vue"
 
 
 export default {
     name: "home",
     components : {
-        cart
+        cart,
+        list,
     },
     data() {
         return {
@@ -134,6 +134,7 @@ export default {
             cart: [],
             max: 100000,
             cari: '',
+            hello: true,
             checkout: {
                 chasier: 'michan',
                 amount: 0,
@@ -142,8 +143,31 @@ export default {
         }
     },
     methods: {
-        addChart(data) {
-            this.cart.push(data)
+        addChart(prod) {
+           let indexItem 
+           let isExist = this.cart.filter((item, index) => {
+               if (item.product) {
+                    if(item.product.id === Number(prod.id)){
+                        indexItem = index
+                        return true
+                    } else {
+                        return false
+                    }
+               } else {
+                   return false
+               }
+               // eslint-disable-next-line no-unreachable
+           })
+
+            console.log(isExist)
+            // eslint-disable-next-line no-unreachable
+            if(isExist.length) {
+                this.cart[indexItem].qty++
+            } else {
+                this.cart.push({product: prod, qty: 1})
+            }
+        // this.cart.push(prod)
+        console.log(this.cart)
         },
         addCheckout() {
             this.checkout.amount = this.calculate
@@ -162,13 +186,18 @@ export default {
             })
             .then((res) => {console.log(res)})
         },
-
+        getQty(){
+            console.log(this.jumlah)
+        },
         cancel() {
             this.cart = []
         },
 
     },
     computed: {
+        allChart(){
+            return this.cart
+        },
         calculate(){
             let harga = 0
             for(const datas of this.cart) {
@@ -185,7 +214,7 @@ export default {
     },
     async mounted() {
      await axios
-            .get(process.env.VUE_APP_URL + 'product', {
+            .get(process.env.VUE_APP_URL + "product", {
                 headers: {
                     'authtoken': localStorage.getItem('token')
                 }
@@ -214,6 +243,14 @@ body {
     box-sizing: border-box;
 }
 
+.box {
+    background-color: white;
+    position: relative;
+    width: 40em;
+    height: 4em;
+    margin: 11px 155px;
+}
+
 .header {
     position: fixed;
     width: 1054px;
@@ -235,7 +272,7 @@ body {
 }
 
 .header-text {
-    margin: 2.5em 0em 0em 28em;
+    margin: 2.5em 0em 0em 30em;
 }
 
 .header-text p {
@@ -247,12 +284,12 @@ body {
     position: absolute;
     width: 35.35px;
     height: 35px;
-    left: 934.14px;
+    left: 981.14px;
     top: 35px;
 }
 
 .head-search {
-    margin: -3rem 38rem;
+    margin: -3rem 41rem;
 }
 
 .left-bar {
