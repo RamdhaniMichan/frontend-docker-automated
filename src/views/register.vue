@@ -2,7 +2,7 @@
     <div class="login">
         <b-card style="max-width: 25rem;">
             <b-form @submit.prevent="handleSubmit" >
-                <b-form-group id="input-group-1" label="Username:" label-for="input-1">
+                <b-form-group id="input-group-1" label="Email:" label-for="input-1">
                     <b-form-input type="text" required placeholder="Enter Name"></b-form-input>
                 </b-form-group>
                 <b-form-group id="input-group-1" label="Email:" label-for="input-1">
@@ -37,40 +37,18 @@ export default {
                 role: this.role
             }
 
-            axios.post(process.env.VUE_APP_URL + "users", data)
-                .then((res) => {
-                    console.log(res)
-                    alert("Register Success")
-                })
-                .catch((err) => {
-                    console.log(err)
-                    alert("Regiter Failure")
-                })
-
-            
-            this.$router.push("/")
+            axios.post("http://localhost:8081/users", data)
+            this.$store.dispatch('Register', data)
+            .then(() => {
+                this.$router.push('/')
+                alert("Regustrasi Sukses")
+            })
+            .catch((err) => {
+                console.log(err)
+            })
             
         }
     },
-    mounted() {
-        if (localStorage.email && localStorage.password) {
-            this.email = localStorage.email
-            this.password = localStorage.password
-        }
-
-        setTimeout(()=> {
-            localStorage.removeItem("email")
-            localStorage.removeItem("password")
-        },5000)
-    },
-    watch: {
-        email(newEmail) {
-            localStorage.email = newEmail
-        },
-        password(newPassword) {
-            localStorage.password = newPassword
-        }
-    }
 }
 </script>
 

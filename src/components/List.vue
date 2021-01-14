@@ -9,7 +9,7 @@
                 </b-card-text>
             </div>
 
-            <b-button variant="primary" @click="addItems">Add</b-button>
+            <b-button variant="primary" @click="addItems(prod)">Add</b-button>
         </b-card>
     </b-row>
 </template>
@@ -45,9 +45,8 @@ export default {
         }
     },
     methods: {
-        addItems(){
-            console.log(this.prod)
-            this.$emit("addData", this.prod)
+        addItems(prod){
+            this.$emit("addData", prod)
         }
     }
 }

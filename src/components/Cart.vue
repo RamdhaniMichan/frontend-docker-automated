@@ -2,22 +2,27 @@
     <div>
         <b-row>
             <b-col cols="12">
-                     <div class="add-to-cart" v-for="(item, index) in cart" :key="item.id">
+                     <div class="add-to-cart" v-for="(item) in cart" :key="item.id">
+                        <div class="cart-txt">{{item.product.name}}</div>
                         <div class="cart-price">{{item.product.price}}</div>
-                        <p>{{index}}</p>
                         <div class="btn-group">
                             <div class="quantity">
-                                <button class="btn-cart" @click="plus" type="button" name="button">
+                                <button class="btn-cart"  type="button" name="button">
                                     +
                                 </button>
-                                <input type="text" name="name" :value="jumlah">
-                                <button class="btn-cart" @click="less" type="button" name="button">
+                                <input type="text" name="name" :value="qty">
+                                <button class="btn-cart"  type="button" name="button">
                                     -
                                 </button>
                             </div>
                         </div>
-                     </div>
-                    <div><img class="cart-img" :img-src="item.product.image" alt="" srcset=""></div>
+                        <div><img class="cart-img" :src="item.product.image" alt="" srcset=""></div>
+                    </div>
+                     <div class="cart-bottom">
+                        <strong><p class="txt-1">Total : Rp . {{total}}<span class="txt-2"></span></p></strong>
+                        <b-button variant="primary" v-b-modal="'checkout'" block>Checkout</b-button>
+                        <b-button @click="cancel" variant="danger" block>Cancel</b-button>
+                    </div>
             </b-col>
         </b-row>
     </div>
@@ -26,7 +31,7 @@
 <script>
     export default {
     name: "cart",
-    props: ["cart"],
+    props: ["cart", "total", "qty"],
     data(){
         return {
             jumlah : 1,
@@ -34,20 +39,11 @@
         }
     },
         methods: {
-            qty(){
-                this.$emit('qty', this.jumlah)
-            },
-            plus() {
-                let x = this.jumlah++
-                x * this.price
-            },
-            less(){
-                if (this.jumlah === 1){
-                    alert('tidak boleh kurang dari 1')
-                } else {
-                    this.jumlah--
-                }
-            }
+            cancel() {
+                this.cart = []
+                this.total = 0
+                this.qty = ''
+            },   
         },
     }
 </script>
@@ -104,13 +100,13 @@
 }
 
 .cart-bottom {
-    position: fixed;
+    position: absolute;
+    width: 27rem;
+    margin: 17rem 1rem;
 }
 
 .txt-1 {
-    position: fixed;
     font-size: auto;
     font-weight: bold;
-    margin: 18rem 1rem;
 }
 </style>

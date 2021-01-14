@@ -16,9 +16,10 @@
         <b-container>
             <div class="left-bar" id="left-bar">
                 <ul>
-                    <li><router-link to="/home"><img class="icon" src="../assets/images/fork.png" alt=""></router-link></li>
+                    <li><router-link to="/homes"><img class="icon" src="../assets/images/fork.png" alt=""></router-link></li>
                     <li><router-link to="/history"><img class="icon" src="../assets/images/clipboard.png" alt=""></router-link></li>
-                    <li><router-link to="/add"><img class="icon" src="../assets/images/add.png" alt=""></router-link></li>
+                    <li v-if="role === 'admin'"><router-link to="/add"><img class="icon" src="../assets/images/add.png" alt=""></router-link></li>
+                    <li><font-awesome-icon :icon="['fas', 'sign-out-alt']" class="icon" @click="signOut" /></li>
                 </ul>
             </div>
         </b-container>
@@ -40,7 +41,7 @@
                 <b-row>
                     <div class="" v-for="datas in filter" :key="datas.id">
                         <div class="sort" v-if="max >= Number(datas.price) ">
-                        <b-col cols="12" class="mt-5" style="padding-left: 4rem; padding-right: 0;">
+                        <b-col cols="12" class="mt-3" style="padding-left: 5.5rem; padding-right: 0;">
                                     <b-card-text>
                                         <list
                                            :name = "datas.name"
@@ -60,7 +61,7 @@
         <b-container>
             <div class="cart">
                 <div class="cart-text">
-                    <p>Cart <span class="badge badge-pill badge-info" @qty="getQty">{{cart.length}}</span></p>
+                    <p>Cart <span class="badge badge-pill badge-info">{{qty}}</span></p>
                 </div>
             </div>
 
@@ -80,14 +81,10 @@
                 <div class="loop" v-else>
                     <b-row>
                         <b-col cols="12">
-                                <cart :cart="allChart"/>
+                                <cart :cart="allChart" :total="calculate" :qty="qty"/>
                         </b-col>
                     </b-row>
-                    <div class="cart-bottom">
-                        <strong><p class="txt-1">Total : Rp . <span class="txt-2">{{calculate}}</span></p></strong>
-                        <b-button variant="primary" v-b-modal="'checkout'" block>Checkout</b-button>
-                        <b-button @click="cancel" variant="danger" block>Cancel</b-button>
-                    </div>
+                   
                 </div>
             </div>
             <div>
@@ -95,10 +92,10 @@
                     <div v-for="data of cart" :key="data.id">
                         <b-row>
                             <b-col>
-                                <p>{{data.name}}</p>
+                                <p>{{data.product.name}}</p>
                             </b-col>
                             <b-col>
-                                <p class="modal-text2">Rp. {{data.price}}</p>
+                                <p class="modal-text2">Rp. {{data.product.price}}</p>
                             </b-col>
                         </b-row>
                     </div>
@@ -119,7 +116,8 @@
 <script>
 import axios from "axios"
 import cart from "@/components/Cart.vue"
-import list from "../components/List.vue"
+import list from "@/components/List.vue"
+import {mapGetters} from "vuex"
 
 
 export default {
@@ -134,7 +132,8 @@ export default {
             cart: [],
             max: 100000,
             cari: '',
-            hello: true,
+            hello: false,
+            role: localStorage.getItem('role'),
             checkout: {
                 chasier: 'michan',
                 amount: 0,
@@ -146,53 +145,46 @@ export default {
         addChart(prod) {
            let indexItem 
            let isExist = this.cart.filter((item, index) => {
-               if (item.product) {
-                    if(item.product.id === Number(prod.id)){
-                        indexItem = index
-                        return true
-                    } else {
-                        return false
-                    }
-               } else {
-                   return false
-               }
-               // eslint-disable-next-line no-unreachable
+                if (item.product.id === prod.id) {
+                    console.log(index)
+                    indexItem = index
+                    return true
+                } else {
+                    return false
+                }
            })
 
-            console.log(isExist)
-            // eslint-disable-next-line no-unreachable
             if(isExist.length) {
                 this.cart[indexItem].qty++
             } else {
                 this.cart.push({product: prod, qty: 1})
             }
-        // this.cart.push(prod)
-        console.log(this.cart)
         },
         addCheckout() {
             this.checkout.amount = this.calculate
             let arrayValue = []
             this.cart.forEach((value) => {
-                arrayValue.push(value.name)
+                arrayValue.push(value.product.name)
             });
             this.checkout.orders = arrayValue.join(", ").toString("")
             axios({
                 method: "POST",
                 url: process.env.VUE_APP_URL + "history",
                 headers: {
-                    'authtoken': localStorage.getItem('token'),
+                    'authtoken': this.getToken,
                 },
                 data: this.checkout,
             })
-            .then((res) => {console.log(res)})
+            .then((res) => {
+                    console.log(res)
+                    alert("Data Success Checkout")
+                })
+            .catch((err) => {console.log(err)})
         },
-        getQty(){
-            console.log(this.jumlah)
-        },
-        cancel() {
-            this.cart = []
-        },
-
+        signOut(){
+                this.$store.dispatch('logout')
+                this.$router.push('/')
+        }
     },
     computed: {
         allChart(){
@@ -200,30 +192,43 @@ export default {
         },
         calculate(){
             let harga = 0
-            for(const datas of this.cart) {
-                harga = Number(datas.price) + harga
+            for(const key in this.cart) {
+                harga = harga + this.cart[key].product.price * this.cart[key].qty
             }
             return harga
+        },
+        qty(){
+            let qty = 0
+            for(const key in this.cart) {
+                qty = qty + this.cart[key].qty
+            }
+            return qty
         },
         filter(){
             return this.items.filter((values) => {
                 return values.name.toLowerCase().includes(this.cari)
             })
         },
+        ...mapGetters(['getToken'])
         
     },
-    async mounted() {
-     await axios
+    mounted() {
+     axios
             .get(process.env.VUE_APP_URL + "product", {
                 headers: {
-                    'authtoken': localStorage.getItem('token')
+                    'authtoken': this.getToken
                 }
             })
-            .then(response => 
-                {
-                   this.items = response.data.result
+            .then((response) => {
+                 if(response.data.description === 'Unauthorized') {
+                     console.log(response.data.result)
+                    alert("Login First")
+                    this.$router.push("/")
+                } else {
+                    this.items = response.data.result 
                 }
-            )
+            })
+
             .catch(err => {this.items = err})
 
     }

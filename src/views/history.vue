@@ -10,7 +10,7 @@
         <b-container>
             <div class="left-bar" id="left-bar">
                 <ul>
-                    <li><router-link to="/home"><img class="icon" src="../assets/images/fork.png" alt=""></router-link></li>
+                    <li><router-link to="/homes"><img class="icon" src="../assets/images/fork.png" alt=""></router-link></li>
                     <li><router-link to="/history"><img class="icon" src="../assets/images/clipboard.png" alt=""></router-link></li>
                     <li><router-link to="/add"><img class="icon" src="../assets/images/add.png" alt=""></router-link></li>
                 </ul>
@@ -26,7 +26,7 @@
                             <div class="ellipse3"></div>
                             <div class="text1">
                                 <p><strong>Today's Income</strong></p>
-                                <p><strong>Rp. 1.000.000</strong></p>
+                                <p><strong>Rp. {{amount}}</strong></p>
                                 <p><strong>+2% Yesterday</strong></p>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                             <div class="ellipse3"></div>
                              <div class="text1">
                                 <p><strong>Orders</strong></p>
-                                <p><strong>150</strong></p>
+                                <p><strong>{{total}}</strong></p>
                                 <p><strong>+2% Yesterday</strong></p>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                             <div class="ellipse3"></div>
                              <div class="text1">
                                 <p><strong>This Years Income</strong></p>
-                                <p><strong>Rp. 10.000.000</strong></p>
+                                <p><strong>Rp. {{amount}}</strong></p>
                                 <p><strong>+2% Yesterday</strong></p>
                             </div>
                         </div>
@@ -77,18 +77,22 @@
 
 <script>
 import axios from "axios"
+import {mapGetters} from "vuex"
+
 export default {
     name: "history",
     data() {
         return {
-            items: []
+            items: [],
+            total: 0,
+            amount: 0
         }
     },
     async mounted() {
-     await axios
+        await axios
             .get(process.env.VUE_APP_URL + 'history', {
                 headers: {
-                    'authtoken': localStorage.getItem('token')
+                    'authtoken': this.getToken
                 }
             })
             .then(response => 
@@ -98,6 +102,37 @@ export default {
             )
             .catch(err => {this.items = err})
 
+        await axios
+            .get(process.env.VUE_APP_URL + 'history/total', {
+                headers: {
+                    'authtoken': this.getToken
+                }
+            })
+            .then(response => 
+                {
+                   this.total = response.data.result[0].count
+                   console.log(this.total)
+                }
+            )
+            .catch(err => {this.total = err})
+
+        await axios
+            .get(process.env.VUE_APP_URL + 'history/amount', {
+                headers: {
+                    'authtoken': this.getToken
+                }
+            })
+            .then(response => 
+                {
+                   this.amount = response.data.result[0].sum
+                   console.log(this.amount)
+                }
+            )
+            .catch(err => {this.amount = err})
+
+    },
+    computed: {
+        ...mapGetters(['getToken'])
     }
 }
 </script>

@@ -11,7 +11,7 @@
             <div class="left-bar" id="left-bar">
                 <ul>
                     <li>
-                        <router-link to="/home"><img class="icon" src="../assets/images/fork.png" alt=""></router-link>
+                        <router-link to="/homes"><img class="icon" src="../assets/images/fork.png" alt=""></router-link>
                     </li>
                     <li>
                         <router-link to="/history"><img class="icon" src="../assets/images/clipboard.png" alt="">
@@ -123,6 +123,7 @@
 
 <script>
     import axios from 'axios'
+    import {mapGetters} from "vuex"
 
     export default {
         name: "add",
@@ -178,10 +179,10 @@
 
                 axios({
                         method: "post",
-                        url: "http://localhost:8081/product",
+                        url: process.env.VUE_APP_URL + "product",
                         headers: {
                             "Content-type": "multipart/form-data",
-                            "authtoken": localStorage.getItem('token')
+                            "authtoken": this.getToken,
                         },
                         data: postData
                     })
@@ -204,10 +205,10 @@
 
                 axios({
                         method: "put",
-                        url: "http://localhost:8081/product",
+                        url: process.env.VUE_APP_URL + "product",
                         headers: {
                             "Content-type": "multipart/form-data",
-                            "authtoken": localStorage.getItem('token')
+                            "authtoken": this.getToken,
                         },
                         data: postData
                     })
@@ -222,10 +223,10 @@
             deleteProd(id) {
                 axios({
                         method: "delete",
-                        url: `http://localhost:8081/product/${id}`,
+                        url: process.env.VUE_APP_URL + `product/${id}`,
                         headers: {
                             "Content-type": "application/json",
-                            "authtoken": localStorage.getItem('token')
+                            "authtoken": this.getToken,
                         }
                     })
                     .then(res => {
@@ -258,11 +259,14 @@
                 this.idfood = value.idfood
             }
         },
+        computed: {
+            ...mapGetters(['getToken'])
+        },
         mounted() {
             axios
                 .get(process.env.VUE_APP_URL + "product", {
                     headers: {
-                        'authtoken': localStorage.getItem('token')
+                        'authtoken': this.getToken,
                     }
                 })
                 .then(response => {

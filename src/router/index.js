@@ -4,22 +4,39 @@ import Home from "../views/home.vue"
 import History from "../views/history.vue"
 import AddData from "../views/addData.vue"
 import Login from "../views/login.vue"
-import Register from "../views/register.vue"
+import Register from "../components/Register.vue"
+import store from "../store"
+
+const isAuth = (to, from, next) => {
+    if (store.getters["getIsAuth"]) {
+      next()
+    } else {
+      next('/')
+    }
+  }
+
+  const isOut = (to, from, next) => {
+    if (store.getters["getOut"]) {
+      next('/')
+    } else {
+      next()
+    }
+  }
 
 Vue.use(VueRouter)
 
-
-const Router = new VueRouter ({
-    routes : [
+    const routes = [
         {
-            path : "/home",
+            path : "/homes",
             name : "home",
             component : Home
         },
         {
             path : "/history",
             name : "history",
-            component : History
+            component : History,
+            beforeEnter: isAuth,
+            afterEnter: isOut
         },
         {
             path : "/add",
@@ -37,6 +54,9 @@ const Router = new VueRouter ({
             component : Register
         },
     ]
-})
 
-export default Router
+    const router = new VueRouter({
+        routes
+    })
+
+export default router
