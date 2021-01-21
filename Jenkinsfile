@@ -65,7 +65,7 @@ pipeline {
                             sshPublisherDesc(
                                 configName: 'server',
                                 verbose: false,
-                                transfer: [
+                                transfers: [
                                     execCommand: "docker pull ${image_name}; docker kill frontend; docker run -d --name frontend -p 8080:8080 ${image_name}",
                                     execTimeout: 1200000
                                 ]
