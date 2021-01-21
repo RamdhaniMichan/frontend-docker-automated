@@ -1,5 +1,5 @@
 # frontend
-hello from jenkins
+
 ## Project setup
 ```
 npm install
