@@ -66,8 +66,10 @@ pipeline {
                                 configName: 'server',
                                 verbose: false,
                                 transfers: [
-                                    execCommand: "docker pull ${image_name}; docker kill frontend; docker run -d --name frontend -p 8080:8080 ${image_name}",
-                                    execTimeout: 1200000
+                                    sshTransfer(
+                                        execCommand: "docker pull ${image_name}; docker kill frontend; docker run -d --name frontend -p 8080:8080 ${image_name}",
+                                        execTimeout: 1200000
+                                    )
                                 ]
                             )
                         ]
