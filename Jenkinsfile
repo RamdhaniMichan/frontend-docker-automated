@@ -60,20 +60,20 @@ pipeline {
         stage("Deploy") {
             steps {
                 script {
-                    sshPublisher {
+                    sshPublisher(
                         publishers: [
                             sshPublisherDesc(
                                 configName: 'server',
                                 verbose: false,
                                 transfers: [
                                     sshTransfer(
-                                        execCommand: "docker pull ${image_name}; docker kill frontend; docker run -d --name frontend -p 8080:8080 ${image_name}",
+                                        execCommand : "docker pull ${image_name}; docker kill vuevue; docker run -d --rm --name vuevue -p 8080:80 ${image_name}",
                                         execTimeout: 1200000
                                     )
                                 ]
                             )
                         ]
-                    }
+                    )
                 }
             }
         }
