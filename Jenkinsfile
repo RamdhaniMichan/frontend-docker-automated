@@ -4,7 +4,7 @@ pipeline {
     parameters {
         string(name: 'DOCKERHUB', defaultValue: 'nameDockerID', description: 'DockerID')
         booleanParam(name: 'RUNTEST', defaultValue: 'false', description: 'Not Running')
-        choice(name: 'DEPLOY', choices: ['Yes', 'No'], description: 'Build Run')
+        choice(name: 'DEPLOY', choices: ["Yes", "No"], description: 'Build Run')
     }
 
     stages {
@@ -29,7 +29,7 @@ pipeline {
         stage("Deploy") {
             when {
                 expression {
-                    params.DEPLOY === "Yes"
+                    params.DEPLOY == "Yes"
                 }
             }
             steps {
