@@ -35,7 +35,7 @@ const getters = {
 const actions = {
     Login({commit}, data) {
         return new Promise((resolve, reject) => {
-            axios.post("http://localhost:8082/auth", data)
+            axios.post(process.env.VUE_APP_URL + "auth", data)
             .then((res) => {
                 // if(res.data.result[0].msg== "Check Password Anda"){
                 //     reject(res.data.result[0].msg)
