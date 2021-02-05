@@ -196,9 +196,9 @@
         <b-row>
           <b-col>
             <table class="table">
-              <b-button class="mb-3" v-b-modal="'modal-add'" variant="primary"
-                >Add</b-button
-              >
+              <b-button class="mb-3" v-b-modal="'modal-add'" variant="primary">
+                Add
+              </b-button>
               <tr>
                 <th>Name</th>
                 <th>Description</th>
@@ -234,13 +234,35 @@
           </b-col>
           <b-col>
             <table class="table-2 btn-pos">
-              <b-button>add</b-button>
-              <th>
-                ID
-              </th>
-              <th>
-                Name Category
-              </th>
+              <b-button class="mb-3" variant="primary">Add</b-button>
+              <tr>
+                <th>
+                  No
+                </th>
+                <th>
+                  Name Category
+                </th>
+                <th>Opsi</th>
+              </tr>
+              <tr v-for="categorys in category" :key="categorys.id">
+                <td>
+                  {{ categorys.id }}
+                </td>
+                <td>
+                  {{ categorys.category }}
+                </td>
+                <td>
+                  <b-button
+                    variant="primary"
+                    size="sm"
+                    v-b-modal="'modal-edit'"
+                    block
+                  >
+                    Update</b-button
+                  >
+                  <b-button variant="danger" size="sm" block>Delete</b-button>
+                </td>
+              </tr>
             </table>
           </b-col>
         </b-row>
@@ -262,6 +284,7 @@ export default {
   data() {
     return {
       items: [],
+      category: [],
       id: 0,
       name: "",
       description: "",
@@ -407,6 +430,19 @@ export default {
       .catch((err) => {
         this.items = err;
       });
+
+    axios
+      .get(process.env.VUE_APP_URL + "category", {
+        headers: {
+          authtoken: this.getToken,
+        },
+      })
+      .then((response) => {
+        this.category = response.data.result;
+      })
+      .catch((err) => {
+        this.category = err;
+      });
   },
 };
 </script>
@@ -505,7 +541,7 @@ li {
   position: absolute;
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  margin: 6.4rem 27rem;
+  margin: 3rem 27rem;
   width: 45%;
   font-size: 0px;
   font-size: 15px;
