@@ -1,7 +1,7 @@
 <template>
   <div class="style-login">
     <div class="login">
-      <h1 style="margin: auto 8rem;padding: 1rem;">LOGIN</h1>
+      <h1 style="margin: auto 3rem;padding: 1rem;">LOGIN</h1>
       <b-card>
         <b-form @submit.prevent="handleSubmit">
           <b-form-group id="input-group-1" label="Email:" label-for="input-1">
@@ -68,8 +68,6 @@ export default {
 
 * {
   font-family: "Poppins", sans-serif;
-  margin: auto;
-  padding: 0;
 }
 
 .style-login {
@@ -84,5 +82,13 @@ export default {
   position: relative;
   margin: 0rem 35rem;
   width: 25rem;
+}
+
+@media screen and (max-width: 1000px) {
+  .login {
+    position: relative;
+    margin: 0rem 25rem;
+    width: 15rem;
+  }
 }
 </style>
