@@ -1,21 +1,19 @@
-def dockerhub = "michan11/vue-jenkins"
+def dockerhub = "michan11/frontend-vue"
 def image_name = "${dockerhub}:${BRANCH_NAME}"
 def builder
 
 pipeline {
     agent any
 
-    // parameters {
-    //     string(name: 'DOCKERHUB', defaultValue: 'nameDockerID', description: 'DockerID')
-    //     booleanParam(name: 'RUNTEST', defaultValue: 'false', description: 'Not Running')
-    //     choice(name: 'DEPLOY', choices: ["Yes", "No"], description: 'Build Run')
-    // }
+    parameters {
+        choice(name: 'DEPLOY', choices: ["DEVELOPMENT", "PRODUCTION"], description: 'Build App To Server')
+    }
 
     stages {
 
         stage("Installing ....") {
             steps {
-                nodejs("node") {
+                nodejs("node14") {
                     sh 'npm install'
                 }
             }
@@ -30,11 +28,6 @@ pipeline {
         }
 
         stage("Testing") {
-            // when {
-            //     expression {
-            //         params.RUNTEST
-            //     }
-            // }
             steps {
                  script {
                      builder.inside {
@@ -52,7 +45,13 @@ pipeline {
             // }
             steps {
                  script {
-                     builder.push()
+                     if (params.DEPLOY == "DEVELOPMENT") {
+                        builder.push()
+                     }
+
+                     if (params.DEPLOY == "PRODUCTION") {
+                        builder.push()
+                     }
                  }
             }
         }
@@ -60,20 +59,39 @@ pipeline {
         stage("Deploy") {
             steps {
                 script {
-                    sshPublisher(
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'server',
-                                verbose: false,
-                                transfers: [
-                                    sshTransfer(
-                                        execCommand : "docker pull ${image_name}; docker kill vuevue; docker run -d --rm --name vuevue -p 8080:8080 ${image_name}",
-                                        execTimeout: 1200000
-                                    )
-                                ]
-                            )
-                        ]
-                    )
+                    if (params.DEPLOY == "DEVELOPMENT") {
+                        sshPublisher(
+                            publishers: [
+                                sshPublisherDesc(
+                                    configName: 'develop',
+                                    verbose: true,
+                                    transfers: [
+                                        sshTransfer(
+                                            execCommand : "docker pull ${image_name}; docker kill vuevue; docker run -d --rm --name frontend-vue -p 8080:8080 ${image_name}",
+                                            execTimeout: 1200000
+                                        )
+                                    ]
+                                )
+                            ]
+                        )
+                    }
+
+                    if (params.DEPLOY == "PRODUCTION") {
+                        sshPublisher(
+                            publishers: [
+                                sshPublisherDesc(
+                                    configName: 'develop',
+                                    verbose: true,
+                                    transfers: [
+                                        sshTransfer(
+                                            execCommand : "docker pull ${image_name}; docker kill vuevue; docker run -d --rm --name frontend-vue -p 8080:8080 ${image_name}",
+                                            execTimeout: 1200000
+                                        )
+                                    ]
+                                )
+                            ]
+                        )
+                    }
                 }
             }
         }
