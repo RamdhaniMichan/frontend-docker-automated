@@ -11,7 +11,7 @@ pipeline {
 
     stages {
 
-        stage("Installing ....") {
+        stage("Installing") {
             steps {
                 nodejs("node14") {
                     sh 'npm install'
@@ -67,7 +67,7 @@ pipeline {
                                     verbose: true,
                                     transfers: [
                                         sshTransfer(
-                                            execCommand : "docker pull ${image_name}; docker kill vuevue; docker run -d --rm --name frontend-vue -p 8080:8080 ${image_name}",
+                                            execCommand : "docker pull ${image_name}; docker kill frontend-vue; docker run -d --rm --name frontend-vue -p 8080:8080 ${image_name}",
                                             execTimeout: 1200000
                                         )
                                     ]
@@ -84,7 +84,7 @@ pipeline {
                                     verbose: true,
                                     transfers: [
                                         sshTransfer(
-                                            execCommand : "docker pull ${image_name}; docker kill vuevue; docker run -d --rm --name frontend-vue -p 8080:8080 ${image_name}",
+                                            execCommand : "docker pull ${image_name}; docker kill frontend-vue; docker run -d --rm --name frontend-vue -p 8080:8080 ${image_name}",
                                             execTimeout: 1200000
                                         )
                                     ]
