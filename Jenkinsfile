@@ -67,7 +67,7 @@ pipeline {
                                     verbose: true,
                                     transfers: [
                                         sshTransfer(
-                                            execCommand : "docker kill frontend-vue; docker rmi ${image_name}; cd config_image; docker-compose up -d;",
+                                            execCommand : "docker kill frontend-vue; docker rmi ${image_name}; cd config-image; docker-compose up -d;",
                                             execTimeout: 1200000
                                         )
                                     ]
