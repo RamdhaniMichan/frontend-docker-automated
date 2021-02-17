@@ -1,7 +1,7 @@
 <template>
   <div class="style-login">
     <div class="login">
-      <h1 style="margin: auto 3rem;padding: 1rem;">LOGIN</h1>
+      <h1 style="margin: auto 7.5rem;padding: 1rem;">LOGIN</h1>
       <b-card>
         <b-form @submit.prevent="handleSubmit">
           <b-form-group id="input-group-1" label="Email:" label-for="input-1">
@@ -27,7 +27,7 @@
             ></b-form-input>
           </b-form-group>
           <b-button type="submit" block variant="danger">Sign in</b-button>
-          <p class="float-right">
+          <p class="float-right pt-1">
             <router-link to="/register">Register</router-link>
           </p>
         </b-form>
@@ -71,16 +71,17 @@ export default {
 }
 
 .style-login {
+  position: absolute;
   background-image: url("../assets/images/shop.jpg");
   width: 100%;
-  height: 765px;
+  height: 100%;
   background-size: cover;
   background-repeat: repeat;
 }
 
 .login {
   position: relative;
-  margin: 0rem 35rem;
+  margin: 15rem 47rem;
   width: 25rem;
 }
 

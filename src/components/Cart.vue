@@ -114,7 +114,7 @@ export default {
   position: absolute;
   font-size: 1rem;
   font-weight: bold;
-  margin: 4.5rem 24rem;
+  margin: 4.5rem 30rem;
 }
 
 .btn-group {
@@ -143,12 +143,13 @@ export default {
 
 .cart-bottom {
   position: absolute;
-  width: 27rem;
+  width: 33rem;
   margin: 17rem 1rem;
 }
 
 .txt-1 {
   font-size: auto;
   font-weight: bold;
+  margin: -1rem 0 0 24rem;
 }
 </style>

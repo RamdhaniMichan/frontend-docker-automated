@@ -275,7 +275,7 @@ body {
 
 .header {
   position: fixed;
-  width: 1054px;
+  width: 1342px;
   height: 100px;
   left: 0px;
   top: 0px;
@@ -293,7 +293,7 @@ body {
 }
 
 .header-text {
-  margin: 2.5em 0em 0em 30em;
+  margin: 2.5em 0em 0em 38em;
 }
 
 .header-text p {
@@ -305,7 +305,7 @@ body {
   position: absolute;
   width: 35.35px;
   height: 35px;
-  left: 981.14px;
+  left: 1286px;
   top: 35px;
 }
 
@@ -316,7 +316,7 @@ body {
 .left-bar {
   position: fixed;
   width: 109px;
-  height: 800px;
+  height: 100%;
   left: 0px;
   top: 106px;
   background: #ffffff;
@@ -337,7 +337,7 @@ li {
 
 .content {
   position: absolute;
-  width: 943px;
+  width: 1233px;
   height: auto;
   left: 109px;
   top: 100px;
@@ -353,9 +353,9 @@ li {
 
 .cart {
   position: fixed;
-  width: 536px;
+  width: 100%;
   height: 96px;
-  left: 999px;
+  left: 1343px;
   top: 0px;
 
   background: #ffffff;
@@ -370,9 +370,9 @@ li {
 
 .cart-content {
   position: fixed;
-  width: 536px;
-  height: 800px;
-  left: 1052px;
+  width: 100%;
+  height: 100%;
+  left: 1342px;
   top: 100px;
 
   background: #ffffff;
@@ -383,7 +383,7 @@ li {
   position: absolute;
   width: 200px;
   height: 200px;
-  left: 135px;
+  left: 190px;
   top: 100px;
 }
 
@@ -463,9 +463,9 @@ li {
 }
 
 .cart-bottom {
-  position: absolute;
-  width: 27rem;
-  margin: 17rem 1rem;
+  position: fixed;
+  width: 33rem;
+  margin: 37rem 1rem;
 }
 
 .txt-1 {

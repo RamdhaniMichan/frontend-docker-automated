@@ -105,21 +105,20 @@ export default {
 
 * {
   font-family: "Poppins", sans-serif;
-  margin: 0;
-  box-sizing: border-box;
 }
 
 .style-login {
+  position: absolute;
   background-image: url("../assets/images/shop.jpg");
   width: 100%;
-  height: 765px;
+  height: 100%;
   background-size: cover;
   background-repeat: repeat;
 }
 
 .login {
   position: relative;
-  margin: 0rem 35rem;
+  margin: 15rem 47rem;
   width: 25rem;
 }
 </style>

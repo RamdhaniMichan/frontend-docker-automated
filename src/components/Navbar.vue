@@ -8,7 +8,7 @@
               ><img class="icon" src="../assets/images/fork.png" alt=""
             /></router-link>
           </li>
-          <li>
+          <li v-if="role === 'admin'">
             <router-link to="/history"
               ><img class="icon" src="../assets/images/clipboard.png" alt=""
             /></router-link>
@@ -52,7 +52,7 @@ export default {
 .left-bar {
   position: fixed;
   width: 109px;
-  height: 800px;
+  height: 100%;
   left: 0px;
   top: 106px;
   background: #ffffff;
